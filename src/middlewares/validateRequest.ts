@@ -11,8 +11,8 @@ const validate = (schema: Schema) => function (req: Request, res: Response, next
             query: req.query
         })
         next()
-    } catch (error) {
-        next(error)
+    } catch (e: any) {
+        return res.status(400).send(e.errors);
     }
 }
 

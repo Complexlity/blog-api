@@ -1,10 +1,12 @@
 
 import UserModel from './users.model';
-import UserSchema from './users.schema'
+import bcrypt from 'bcrypt'
+import { omit } from 'lodash'
 
 export async function createUser(input: unknown) {
     try {
-        return await UserModel.create(input)
+        const user = await UserModel.create(input)
+        return omit(user.toJSON(), ['password'])
     } catch (error: any) {
         throw new Error(error)
     }
@@ -16,4 +18,16 @@ export async function getUsers() {
     } catch (error: any) {
         throw new Error(error)
     }
+}
+
+
+export async function validatePassword(email: string, password: string) {
+    const user = await UserModel.findOne({ email })
+    if (!user) {
+        return false
+    }
+
+    const isMatch = user.comparePassword(password)
+    if (!isMatch) return false
+    return omit(user.toJSON(), ['password'])
 }
