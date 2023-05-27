@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validatePassword } from "../users/users.service";
-import { createSession } from "./sessions.service";
+import { createSession, getSessions } from "./sessions.service";
 import { signJwt } from "../../utils/jwt.utils";
 
 const { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } = process.env
@@ -30,4 +30,9 @@ export async function createSessionController(req: Request, res: Response, next:
         , { expiresIn: REFRESH_TOKEN_TTL })
     // return access and refresh token
     return res.send({ accessToken, refreshToken })
+}
+
+export async function getSessionsController(req: Request, res: Response) {
+    const sessions = await getSessions()
+    return res.send(sessions)
 }
