@@ -6,6 +6,7 @@ import cors from 'cors';
 import * as middlewares from './middlewares/errorHandler'
 import api from './api';
 import MessageResponse from './interfaces/MessageResponse';
+import { deserializeUser } from './middlewares/deserializeUser';
 
 require('dotenv').config();
 

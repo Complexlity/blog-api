@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose'
 import { UserDocument } from '../users/users.model';
 import bcrypt from 'bcrypt'
 
-export interface SchemaDocument extends Document {
+export interface SessionDocument extends Document {
     user: UserDocument['_id'];
     valid: boolean,
     userAgent: string,

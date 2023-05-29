@@ -2,7 +2,7 @@ import jwt, { Secret, JwtPayload } from 'jsonwebtoken'
 
 
 const SECRET_KEY = process.env.PRIVATE_KEY as Secret
-const PUBLIC_KEY = process.env.PUBLIC_KEY as Secret
+
 
 
 export function signJwt(payload: JwtPayload, options?: jwt.SignOptions | undefined) {
@@ -11,7 +11,7 @@ export function signJwt(payload: JwtPayload, options?: jwt.SignOptions | undefin
 
 export function verifyJwt(token: string) {
     try {
-        const decoded = jwt.verify(token, PUBLIC_KEY)
+        const decoded = jwt.verify(token, SECRET_KEY)
 
         return {
             valid: true,
@@ -23,6 +23,7 @@ export function verifyJwt(token: string) {
             valid: false,
             expired: error.message === 'jwt expired',
             decoded: null
+
         }
     }
 }
