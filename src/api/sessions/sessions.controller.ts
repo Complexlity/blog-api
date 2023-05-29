@@ -18,6 +18,7 @@ export async function createSessionController(req: Request, res: Response, next:
     const session = await createSession(user._id, req.get('user-agent') || "")
     // Create an access token
 
+
     const accessToken = signJwt({
         ...user, session: session._id
     }, { expiresIn: ACCESS_TOKEN_TTL })
@@ -27,14 +28,14 @@ export async function createSessionController(req: Request, res: Response, next:
     const refreshToken = signJwt({ ...user, session: session._id, }
         , { expiresIn: REFRESH_TOKEN_TTL })
     // return access and refresh token
+
     return res.send({ accessToken, refreshToken })
 }
 
 export async function getUserSessionsController(req: Request, res: Response) {
     let userId = res.locals.user._id
-
-
-    const sessions = await getSessions({ user: userId, valid: false })
+    console.log(userId)
+    const sessions = await getSessions({ user: userId, valid: true })
     return res.send(sessions)
 }
 

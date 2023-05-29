@@ -1,7 +1,8 @@
 
-import UserModel from './users.model';
+import UserModel, { UserDocument } from './users.model';
 import bcrypt from 'bcrypt'
 import { omit } from 'lodash'
+import { FilterQuery } from 'mongoose';
 
 export async function createUser(input: unknown) {
     try {
@@ -30,4 +31,8 @@ export async function validatePassword(email: string, password: string) {
     const isMatch = user.comparePassword(password)
     if (!isMatch) return false
     return omit(user.toJSON(), ['password'])
+}
+
+export async function findUser(query: FilterQuery<UserDocument>) {
+    return await UserModel.find(query)
 }
