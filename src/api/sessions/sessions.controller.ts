@@ -11,12 +11,10 @@ export async function createSessionController(req: Request, res: Response, next:
     const user = await validatePassword(email, password)
 
     if (!user) {
-        //@ts-ignore
         return res.status(401).json({ message: "Invalid credentials" })
     }
 
     // Create a session
-    //@ts-ignore
     const session = await createSession(user._id, req.get('user-agent') || "")
     // Create an access token
 
