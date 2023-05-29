@@ -10,10 +10,7 @@ export interface decodedSchema {
 
 }
 
-
 const SECRET_KEY = process.env.PRIVATE_KEY as Secret
-
-
 
 export function signJwt(payload: JwtPayload, options?: jwt.SignOptions | undefined) {
     return jwt.sign(payload, SECRET_KEY, { ...options || '' });

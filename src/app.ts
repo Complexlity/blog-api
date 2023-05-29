@@ -6,7 +6,8 @@ import cors from 'cors';
 import * as middlewares from './middlewares/errorHandler'
 import api from './api';
 import MessageResponse from './interfaces/MessageResponse';
-import { deserializeUser } from './middlewares/deserializeUser';
+import cookieParser from "cookie-parser";
+
 
 require('dotenv').config();
 
@@ -16,6 +17,7 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
