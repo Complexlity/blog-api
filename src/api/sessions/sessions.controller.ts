@@ -33,16 +33,15 @@ export async function createSessionController(req: Request, res: Response, next:
 }
 
 export async function getUserSessionsController(req: Request, res: Response) {
-    const userId = res.locals.user._id
-    console.log(res.locals.user)
-    console.log(userId)
+    let userId = res.locals.user._id
+
 
     const sessions = await getSessions({ user: userId, valid: false })
     return res.send(sessions)
 }
 
 export async function deleteSessionsController(req: Request, res: Response) {
-    const sessionId = res.locals.user.sessionId
+    const sessionId = res.locals.user.session
 
     await updateSession({ _id: sessionId, }, { valid: false })
     res.send({ accessToken: null, refreshToken: null })

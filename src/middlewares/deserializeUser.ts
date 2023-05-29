@@ -8,8 +8,6 @@ export const deserializeUser = (req: Request, res: Response, next: NextFunction)
     if (!accessToken) return next()
     const { decoded, expired } = verifyJwt(accessToken)
 
-    // console.log('%cdeserializeUser.ts line:9 decoded', 'color: #007acc;', decoded);
-
     if (decoded) {
         res.locals.user = decoded
         // console.log("I am here")
