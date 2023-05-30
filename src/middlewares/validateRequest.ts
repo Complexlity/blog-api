@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import { AnyZodObject, z } from 'zod'
+import { AnyZodObject, z, } from 'zod'
 
 type Schema = AnyZodObject | z.ZodEffects<any, any>
 
@@ -12,8 +12,15 @@ const validate = (schema: Schema) => function (req: Request, res: Response, next
         })
         next()
     } catch (e: any) {
-        return res.status(400).send(e.errors);
+        return res.status(400).send(formatErrors(e.errors));
     }
+}
+
+
+function formatErrors(errors: any) {
+    const firstError = errors[0];
+    const { code, path, message } = firstError;
+    return { code, path: path.join('.'), message };
 }
 
 export default validate
