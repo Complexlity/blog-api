@@ -1,7 +1,5 @@
 import express from 'express';
-
 import MessageResponse from '../interfaces/MessageResponse';
-import emojis from './emojis';
 import users from './users/users.routes'
 import sessions from './sessions/sessions.routes'
 import { deserializeUser } from '../middlewares/deserializeUser';
@@ -17,7 +15,6 @@ router.get<{}, MessageResponse>('/', (req, res) => {
 });
 
 router.use(deserializeUser)
-router.use('/emojis', emojis);
 router.use('/users', users)
 router.use('/sessions', sessions)
 

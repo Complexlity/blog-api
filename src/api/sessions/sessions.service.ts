@@ -3,7 +3,6 @@ import { FilterQuery, UpdateQuery } from "mongoose";
 import { get } from 'lodash'
 import { verifyJwt, signJwt } from "../../utils/jwt.utils";
 import { findUser } from '../users/users.service'
-import { omit } from 'lodash'
 
 
 const { ACCESS_TOKEN_TTL } = process.env

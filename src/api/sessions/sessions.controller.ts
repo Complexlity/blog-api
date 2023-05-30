@@ -48,7 +48,6 @@ export async function createSessionController(req: Request, res: Response, next:
 
 export async function getUserSessionsController(req: Request, res: Response) {
     let userId = res.locals.user._id
-    console.log(userId)
     const sessions = await getSessions({ user: userId, valid: true })
     return res.send(sessions)
 }
