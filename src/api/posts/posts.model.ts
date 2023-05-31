@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 
+export interface PostDocument extends mongoose.Document {
+    title: string
+    content: string
+    author: string
+    published: boolean
+    comments: string[]
+    likes: string[]
+    likeCount: number
+    createdAt: Date
+    updatedAt: Date
+}
+
+
 const PostSchema = new mongoose.Schema({
     title: { type: String, required: true, minLength: 1, maxLength: 30 },
     content: { type: String, required: true, minLength: 1, maxLength: 1000 },
@@ -11,6 +24,7 @@ const PostSchema = new mongoose.Schema({
 
 }, { timestamps: true })
 
-const PostModel = mongoose.model("Post", PostSchema)
+
+const PostModel = mongoose.model<PostDocument>("Post", PostSchema)
 
 export { PostModel }

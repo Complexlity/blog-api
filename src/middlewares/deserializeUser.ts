@@ -16,19 +16,20 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
     }
 
     if (expired && refreshToken) {
+        console.log("I will reissue")
+
         const result = await reIssueAccessToken(refreshToken)
-        let user, newAccessToken
+        let newAccessToken
         if (result) {
-            user = result.user
             newAccessToken = result.newAccessToken
             res.setHeader('x-access-token', newAccessToken)
-            res.locals.user = user
+            res.locals.user = result.user
+            res.cookie('access-token', newAccessToken, {
+                maxAge: 900000, // 15 mins
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
         }
-        res.cookie('access-token', newAccessToken, {
-            maxAge: 900000, // 15 mins
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production'
-        })
         return next()
     }
 

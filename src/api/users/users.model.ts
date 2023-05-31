@@ -36,6 +36,18 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string) 
     return await bcrypt.compare(candidatePassword, user.password).catch(e => false)
 }
 
+UserSchema.set('toJSON', {
+    transform: function (doc, ret) {
+        delete ret.password;
+    }
+});
+
+UserSchema.virtual('clean').get(function () {
+    const { createdAt, updatedAt, ...cleanUser } = this.toObject();
+    return cleanUser;
+});
+
+
 const UserModel = mongoose.model<UserDocument>("User", UserSchema)
 
 export default UserModel

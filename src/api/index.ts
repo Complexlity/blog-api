@@ -7,7 +7,7 @@ import comments from './comments/comments.routes'
 import { deserializeUser } from '../middlewares/deserializeUser';
 
 
-const router = express.Router();
+const router = express.Router()
 
 
 router.get<{}, MessageResponse>('/', (req, res) => {

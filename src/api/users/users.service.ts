@@ -1,6 +1,5 @@
 
 import UserModel, { UserDocument } from './users.model';
-import bcrypt from 'bcrypt'
 import { omit } from 'lodash'
 import { FilterQuery } from 'mongoose';
 

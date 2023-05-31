@@ -8,7 +8,7 @@ require('dotenv').config()
 export async function createUserController(req: Request<{}, {}, UserSchema>, res: Response, next: NextFunction) {
     try {
         const user = await createUser(req.body)
-        res.json(user)
+        res.json(omit(user, ['password']))
     } catch (e) {
         log.error(e);
         next(e)
