@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { createComment } from './comments.service'
+import { createComment, getComments, deleteComment } from './comments.service'
 
 export async function createCommentController(req: Request, res: Response, next: NextFunction) {
     const userId = res.locals.user._id
@@ -10,6 +10,42 @@ export async function createCommentController(req: Request, res: Response, next:
 
     } catch (error: any) {
         next(error)
+    }
+
+}
+
+export async function deleteCommentController(req: Request, res: Response, next: NextFunction) {
+    let error
+    let user = res.locals.user._id
+
+    // Find Comment
+    const commentId = req.params.commentId
+    let comments = await getComments({ _id: commentId })
+    if (!comments) {
+        error = new Error("Comment not found")
+        next(error)
+    }
+
+    // Check if user is the owner of the comment
+    let comment = comments[0]
+    if (comment.user.toString() !== user.toString()) {
+
+        error = new Error("You are not the owner of this comment")
+        error.cause = {
+            commentUser: comment.user,
+            deleter: user
+        }
+
+        return next(error)
+    }
+
+
+    // Process transaction to delete the comment
+    try {
+        await deleteComment(comment._id)
+        res.status(200).send({ status: 200, message: "Comment Deleted Successfully" })
+    } catch (error) {
+        return next(error)
     }
 }
 

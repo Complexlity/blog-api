@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 export interface CommentDocument extends mongoose.Document {
     comment: string
-    author: string
+    user: string
+    post: string
     likes: string[]
     likeCount: number
     createdAt: Date
