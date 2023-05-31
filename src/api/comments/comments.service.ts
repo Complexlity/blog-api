@@ -27,6 +27,7 @@ export async function createComment(userId: string, postId: string, comment: str
     finally {
         await session.endSession()
     }
+
 }
 
 export async function deleteComment(commentId: string) {
@@ -50,3 +51,19 @@ export async function deleteComment(commentId: string) {
     }
 }
 
+export async function updateLike(userId: string, commentId: string) {
+    const comment = await CommentModel.findById(commentId) as unknown as CommentDocument
+    console.log({ comment, userId, commentId })
+    if (!comment) throw new Error("Comment Not Found");
+    const userIndex = comment.likes.indexOf(userId);
+    if (userIndex === -1) {
+        // User hasn't liked the comment yet
+        comment.likeCount++;
+        comment.likes.push(userId);
+    } else {
+        // User already liked the comment
+        comment.likeCount--;
+        comment.likes.splice(userIndex, 1);
+    }
+    await comment.save();
+}

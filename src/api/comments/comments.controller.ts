@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { createComment, getComments, deleteComment } from './comments.service'
+import { createComment, getComments, deleteComment, updateLike } from './comments.service'
 
 export async function createCommentController(req: Request, res: Response, next: NextFunction) {
     const userId = res.locals.user._id
@@ -49,3 +49,15 @@ export async function deleteCommentController(req: Request, res: Response, next:
     }
 }
 
+export async function updateLikeController(req: Request, res: Response, next: NextFunction) {
+    const userId = res.locals.user._id
+    const commentId = req.params.commentId
+    try {
+        await updateLike(userId, commentId)
+        res.status(200).send({ status: 200, message: "Like Updated Successfully" })
+    }
+    catch (error) {
+        next(error)
+    }
+
+}
