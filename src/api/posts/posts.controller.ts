@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import { getPosts, createPost, getComments } from './posts.service'
-import { omit } from 'lodash'
-export function defaultRouter(req: Request, res: Response) {
-    res.send('Hello World!')
-}
+import { getAllPosts, createPost, getSinglePost } from './posts.service'
+
 
 export async function getAllPostsController(req: Request, res: Response, next: NextFunction) {
     try {
-        const posts = await getPosts()
+        const posts = await getAllPosts()
         res.json(posts)
     } catch (error: any) {
         console.log(error.message)
@@ -30,6 +27,6 @@ export async function createPostController(req: Request, res: Response, next: Ne
 export async function getPostCommentsController(req: Request, res: Response) {
     const postId = req.params.postId
     if (!postId) res.sendStatus(404)
-    const comments = await getComments(postId)
-    res.send(comments)
+    const post = await getSinglePost(postId)
+    res.send(post?.comments)
 }

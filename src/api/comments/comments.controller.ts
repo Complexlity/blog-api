@@ -9,6 +9,6 @@ export async function createCommentController(req: Request, res: Response) {
     const userId = res.locals.user._id
     const postId = req.params.postId
     await createComment(userId, postId, req.body.comment)
-    res.status(201).send()
+    res.status(201).send({ status: 201, message: "Comment Created Successfully" })
 }
 
