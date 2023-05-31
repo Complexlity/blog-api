@@ -1,6 +1,6 @@
 import { CommentDocument, CommentModel } from "./comments.model";
 import { PostModel } from "../posts/posts.model";
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 
 export async function createComment(user: string, post: string, comment: string) {
@@ -8,7 +8,9 @@ export async function createComment(user: string, post: string, comment: string)
     session.startTransaction()
     try {
         let newComment = await CommentModel.create([{ user, post, comment }], { session }) as Partial<CommentDocument>[]
+
         const posted = await PostModel.findOne({ _id: post })
+        //@ts-ignore
         posted?.comments.push(newComment[0]._id)
         await posted?.save()
         await session.commitTransaction()
@@ -21,4 +23,9 @@ export async function createComment(user: string, post: string, comment: string)
     finally {
         await session.endSession()
     }
+}
+
+export async function getComments(query: FilterQuery<CommentDocument>) {
+    let comments = await CommentModel.find(query).sort({ createdAt: -1 })
+    return comments
 }
