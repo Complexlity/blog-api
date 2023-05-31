@@ -7,7 +7,6 @@ export async function getAllPostsController(req: Request, res: Response, next: N
         const posts = await getAllPosts()
         res.json(posts)
     } catch (error: any) {
-        console.log(error.message)
         next(error)
     }
 }

@@ -18,7 +18,9 @@ export function signJwt(payload: JwtPayload, options?: jwt.SignOptions | undefin
 
 export function verifyJwt(token: string) {
     try {
-        const decoded = jwt.verify(token, SECRET_KEY) as Partial<decodedSchema>
+        let decoded = jwt.verify(token, SECRET_KEY) as Partial<decodedSchema>
+        //@ts-ignore
+        if (decoded.hasOwnProperty('_doc')) decoded = decoded._doc
         return {
             valid: true,
             expired: false,
