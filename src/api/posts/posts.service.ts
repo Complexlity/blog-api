@@ -10,3 +10,7 @@ export async function createPost(query: FilterQuery<PostDocument>) {
     let post = (await PostModel.create(query)).populate('author')
     return post
 }
+
+export async function getComments(postId: string) {
+    return await PostModel.findById(postId).populate('comments')
+}

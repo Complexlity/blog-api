@@ -1,11 +1,15 @@
 import { Router } from 'express'
-import { getAllPostsController, createPostController } from './posts.controller'
+import { getAllPostsController, createPostController, getPostCommentsController } from './posts.controller'
 import { PostSchema } from './posts.schema'
 import validateRequest from '../../middlewares/validateRequest'
 import requireUser from '../../middlewares/requireUser'
+import { CommentSchema } from '../comments/comments.schema'
+import { createCommentController } from '../comments/comments.controller'
 const router = Router()
 
-router.get('/', getAllPostsController)
+router.post('/:postId/comments', requireUser, validateRequest(CommentSchema), createCommentController)
+router.get("/:postId/comments", getPostCommentsController)
 router.post('/create', requireUser, validateRequest(PostSchema), createPostController)
+router.get('/', getAllPostsController)
 
 export default router
