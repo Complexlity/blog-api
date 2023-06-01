@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import MessageResponse from '../interfaces/MessageResponse';
 import users from './users/users.routes'
 import sessions from './sessions/sessions.routes'
 import posts from './posts/posts.routes'
 import comments from './comments/comments.routes'
 import { deserializeUser } from '../middlewares/deserializeUser';
+import requireUser from '../middlewares/requireUser';
 
 
 const router = express.Router()
@@ -17,8 +18,13 @@ router.get<{}, MessageResponse>('/', (req, res) => {
 });
 
 router.use(deserializeUser)
+router.use('/me', requireUser, (req, res) => {
+  let user = res.locals.user
+  res.json(user)
+})
 router.use('/users', users)
 router.use('/sessions', sessions)
 router.use('/posts', posts)
 router.use('/comments', comments)
 export default router;
+

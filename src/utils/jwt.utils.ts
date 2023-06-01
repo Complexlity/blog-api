@@ -1,4 +1,5 @@
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken'
+import { omit } from 'lodash';
 
 export interface decodedSchema {
     email: string;
@@ -24,7 +25,8 @@ export function verifyJwt(token: string) {
         return {
             valid: true,
             expired: false,
-            decoded
+            decoded: omit(decoded, ['password', 'createdAt', 'updatedAt'
+            ])
         }
     } catch (error: any) {
         return {
