@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
+import { UserDocument } from "../users/users.model";
+import { CommentDocument } from "../comments/comments.model";
 
 export interface PostDocument extends mongoose.Document {
     title: string
     content: string
-    author: string
+    author: UserDocument['_id']
     published: boolean
-    comments: string[]
-    likes: string[]
+    comments: CommentDocument['_id'][]
+    likes: UserDocument['_id'][]
     likeCount: number
     createdAt: Date
     updatedAt: Date

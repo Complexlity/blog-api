@@ -1,10 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { UserDocument } from '../users/users.model';
+import { PostDocument } from '../posts/posts.model';
 
 export interface CommentDocument extends mongoose.Document {
     comment: string
-    user: string
-    post: string
-    likes: string[]
+    user: UserDocument['_id']
+    post: PostDocument['_id']
+    likes: UserDocument['_id'][]
     likeCount: number
     createdAt: Date
     updatedAt: Date
@@ -12,7 +14,7 @@ export interface CommentDocument extends mongoose.Document {
 
 
 
-const CommentSchema = new mongoose.Schema({
+const CommentSchema: Schema = new mongoose.Schema({
     comment: { type: String, required: true, minLength: 1, maxLength: 200 },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true },
