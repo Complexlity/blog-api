@@ -42,11 +42,6 @@ UserSchema.set('toJSON', {
     }
 });
 
-UserSchema.virtual('clean').get(function () {
-    const { createdAt, updatedAt, ...cleanUser } = this.toObject();
-    return cleanUser;
-});
-
 
 const UserModel = mongoose.model<UserDocument>("User", UserSchema)
 
