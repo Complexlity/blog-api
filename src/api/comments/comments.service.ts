@@ -43,6 +43,7 @@ export async function deleteComment(commentId: string) {
         post.comments = post.comments.filter((comment: string) => comment !== commentId);
         await post?.save({ session });
         await session.commitTransaction();
+        return deletedComment;
     } catch (error: any) {
         await session.abortTransaction();
         throw new Error(error.message);

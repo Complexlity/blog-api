@@ -20,6 +20,11 @@ export async function deleteCommentController(req: Request, res: Response, next:
 
     // Find Comment
     const commentId = req.params.commentId
+    if (!commentId) {
+        res.status(403)
+        error = new Error(`Comment ${commentId} not found`)
+        next(error)
+    }
     let comments = await getComments({ _id: commentId })
     if (!comments) {
         error = new Error("Comment not found")
@@ -31,19 +36,14 @@ export async function deleteCommentController(req: Request, res: Response, next:
     if (comment.user.toString() !== user.toString()) {
 
         error = new Error("You are not the owner of this comment")
-        error.cause = {
-            commentUser: comment.user,
-            deleter: user
-        }
-
         return next(error)
     }
 
 
     // Process transaction to delete the comment
     try {
-        await deleteComment(comment._id)
-        res.status(200).send({ status: 200, message: "Comment Deleted Successfully" })
+        let deletedComment = await deleteComment(comment._id)
+        res.status(200).send(deletedComment)
     } catch (error) {
         return next(error)
     }

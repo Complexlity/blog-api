@@ -1,6 +1,6 @@
 import { FilterQuery } from "mongoose";
 import { PostModel, PostDocument } from "./posts.model";
-import { omit } from 'lodash'
+import { CommentModel } from "../comments/comments.model";
 
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     return await PostModel.find(query).sort({ createdAt: -1 }).populate({
@@ -33,7 +33,6 @@ export async function createPost(query: FilterQuery<PostDocument>) {
 }
 
 export async function updateLike(userId: string, postId: string) {
-    console.log({ user: userId, post: postId })
     const post = await PostModel.findById(postId);
     if (!post) throw new Error("Post Not Found");
     const userIndex = post.likes.indexOf(userId);
@@ -49,4 +48,28 @@ export async function updateLike(userId: string, postId: string) {
 
     await post.save();
     return post
+}
+
+export async function deletePost(postId: string) {
+    const session = await mongoose.startSession()
+    session.startTransaction();
+
+    try {
+        const deletedPost = await PostModel.findById(postId, null, { session });
+        if (!deletedPost) throw new Error('Post not found');
+
+        const commentIds = deletedPost.comments;
+        console.log(commentIds)
+        return deletedPost;
+        await CommentModel.deleteMany({ _id: { $in: commentIds } }, { session });
+        await PostModel.findByIdAndDelete(postId, { session });
+
+        await session.commitTransaction();
+        return deletedPost;
+    } catch (error: any) {
+        await session.abortTransaction();
+        throw new Error(error.message);
+    } finally {
+        await session.endSession();
+    }
 }

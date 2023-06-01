@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import requireUser from '../../middlewares/requireUser'
-import { updateLikeController } from './comments.controller'
+import { deleteCommentController, updateLikeController } from './comments.controller'
 
 const router = Router()
 
@@ -9,6 +9,6 @@ router.get('/', (req, res) => {
 })
 
 router.put('/:commentId', requireUser, updateLikeController)
-
+router.delete('/:commentId', requireUser, deleteCommentController)
 
 export default router

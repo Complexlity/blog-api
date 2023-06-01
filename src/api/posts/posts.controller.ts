@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { getAllPosts, createPost, getSinglePost, updateLike } from './posts.service'
+import { getAllPosts, createPost, getSinglePost, updateLike, deletePost } from './posts.service'
 
 
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
@@ -63,4 +63,21 @@ export async function updateLikeController(req: Request, res: Response, next: Ne
     }
 }
 
-
+export async function deletePostController(req: Request, res: Response, next: NextFunction) {
+    const postId = req.params.postId
+    const user = res.locals.user._id
+    try {
+        if (!postId) {
+            res.status(403)
+            throw new Error("Post Value is Missing from Request")
+        }
+        if (postId !== user) {
+            res.status(401)
+            throw new Error("You are not authorized to delete this post")
+        }
+        let deletedPost = await deletePost(postId)
+        res.sendStatus(200).json(deletedPost)
+    } catch (error) {
+        next(error)
+    }
+} 
