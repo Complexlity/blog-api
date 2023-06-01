@@ -6,6 +6,7 @@ import posts from './posts/posts.routes'
 import comments from './comments/comments.routes'
 import { deserializeUser } from '../middlewares/deserializeUser';
 import requireUser from '../middlewares/requireUser';
+import { omit } from 'lodash';
 
 
 const router = express.Router()
@@ -20,7 +21,7 @@ router.get<{}, MessageResponse>('/', (req, res) => {
 router.use(deserializeUser)
 router.use('/me', requireUser, (req, res) => {
   let user = res.locals.user
-  res.json(user)
+  res.json(omit(user, ['createdAt', 'updatedAt']))
 })
 router.use('/users', users)
 router.use('/sessions', sessions)
