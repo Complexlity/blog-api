@@ -53,8 +53,8 @@ export async function updateLikeController(req: Request, res: Response, next: Ne
     const userId = res.locals.user._id
     const commentId = req.params.commentId
     try {
-        await updateLike(userId, commentId)
-        res.status(200).send({ status: 200, message: "Like Updated Successfully" })
+        let comment = await updateLike(userId, commentId)
+        res.status(200).send(comment)
     }
     catch (error) {
         next(error)

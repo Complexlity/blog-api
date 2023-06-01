@@ -66,4 +66,5 @@ export async function updateLike(userId: string, commentId: string) {
         comment.likes.splice(userIndex, 1);
     }
     await comment.save();
+    return comment
 }
