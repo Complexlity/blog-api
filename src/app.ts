@@ -21,7 +21,7 @@ app.use(cookieParser())
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
-    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+    message: 'Thank You For using Complex blog api',
   });
 });
 

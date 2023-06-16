@@ -12,7 +12,7 @@ const validate = (schema: Schema) => function (req: Request, res: Response, next
         })
         next()
     } catch (e: any) {
-        return res.status(400).send(formatErrors(e.errors));
+        return res.status(422).send(formatErrors(e.errors));
     }
 }
 
