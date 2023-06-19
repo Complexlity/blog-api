@@ -3,14 +3,15 @@ import { log } from "../../utils/logger";
 import { createUser, getUsers } from "./users.service";
 import UserSchema from "./users.schema";
 import { omit } from 'lodash'
+import getErrorMessage from '../../utils/getErrorMessage'
 require('dotenv').config()
 
 export async function createUserController(req: Request<{}, {}, UserSchema>, res: Response, next: NextFunction) {
     try {
         const user = await createUser(req.body)
         res.json(omit(user, ['password', 'createdAt', 'updatedAt']))
-    } catch (e) {
-        log.error(e);
+    } catch (e:any) {
+        e = getErrorMessage(e)
         res.status(409)
         next(e)
     }

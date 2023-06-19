@@ -9,7 +9,7 @@ const UserSchema = z.object({
             required_error: "Password is required"
         }).min(6, "Password too short - Minimum 6 characters"),
         passwordConfirmation: string({
-            required_error: "Password is required"
+            required_error: "Password Confirmation is required"
         }),
         email: string({ required_error: "Email is Required" }).email("Invalid email address provided"),
     }).transform(function (body) {

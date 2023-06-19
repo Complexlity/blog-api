@@ -18,3 +18,10 @@ describe('GET /api/v1', () => {
   });
 });
 
+describe('GET /api/v1/invalid-route', () => {
+  it('responds with 404 ', (done) => {
+    request(app)
+      .get('/api/v1/invalid-route')
+    .expect(404, done)
+  })
+})
