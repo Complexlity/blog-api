@@ -7,6 +7,7 @@ import { reIssueAccessToken } from "../api/sessions/sessions.service"
 export const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = get(req, "cookies.access-token") || get(req, 'headers.authorization', '').replace(/^Bearer\s/, '')
     const refreshToken = get(req, "cookies.refresh-token") || get(req, 'headers.x-refresh') as (string | undefined)
+    console.log({accessToken, refreshToken})
     if (!accessToken) return next()
     const { decoded, expired } = verifyJwt(accessToken)
     if (decoded) {
@@ -29,6 +30,7 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
                 secure: process.env.NODE_ENV === 'production'
             })
         }
+        console.log("I am going to the next route")
         return next()
     }
 

@@ -20,11 +20,12 @@ app.use(
     origin: "http://localhost:3000",
     credentials: true,
   })
-);
+  );
+  app.use(cookieParser())
 app.use(express.json());
-app.use(cookieParser())
 
 app.get<{}, MessageResponse>('/', (req, res) => {
+  console.log({cookies: req.cookies})
   res.json({
     message: 'Thank You For using Complex blog api',
   });

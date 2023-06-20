@@ -54,8 +54,12 @@ export async function getUserSessionsController(req: Request, res: Response) {
 
 export async function deleteSessionsController(req: Request, res: Response) {
     const sessionId = res.locals.user.session
-
+    res.clearCookie("access-token");
+    res.clearCookie("refresh-token");
+    res.removeHeader("authorization");
+    res.removeHeader("x-refresh");
     await updateSession({ _id: sessionId, }, { valid: false })
+
     res.send({ accessToken: null, refreshToken: null })
 }
 
