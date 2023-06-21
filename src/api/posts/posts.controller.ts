@@ -8,7 +8,6 @@ export async function createPostController(req: Request, res: Response, next: Ne
         const post = await createPost({ author: user._id, title: req.body.title, content: req.body.content })
         res.send(post)
     } catch (error: any) {
-        console.log(error.message)
         next(error)
 
     }
@@ -80,4 +79,4 @@ export async function deletePostController(req: Request, res: Response, next: Ne
     } catch (error) {
         next(error)
     }
-} 
+}

@@ -59,7 +59,6 @@ export async function deletePost(postId: string) {
         if (!deletedPost) throw new Error('Post not found');
 
         const commentIds = deletedPost.comments;
-        console.log(commentIds)
         return deletedPost;
         await CommentModel.deleteMany({ _id: { $in: commentIds } }, { session });
         await PostModel.findByIdAndDelete(postId, { session });

@@ -5,7 +5,6 @@ import { reIssueAccessToken } from "../api/sessions/sessions.service"
 
 
 export const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
-
     const accessToken = get(req, "cookies.access-token") || get(req, 'headers.authorization', '').replace(/^Bearer\s/, '')
     const refreshToken = get(req, "cookies.refresh-token") || get(req, 'headers.x-refresh') as (string | undefined)
     if (!accessToken) return next()
@@ -24,12 +23,14 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
             newAccessToken = result.newAccessToken
             res.setHeader("authorization", `Bearer ${newAccessToken}`);
             res.locals.user = result.user
-            res.cookie('access-token', newAccessToken, {
-                maxAge: 900000, // 15 mins
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production'
-            })
+            res.cookie("access-token", newAccessToken, {
+              maxAge: 604800000, // 1 week
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+            });
         }
+          console.log({ requestFromFetchingMe: req });
+            console.log({ responseFromFetchingMe: res });
 
         return next()
     }

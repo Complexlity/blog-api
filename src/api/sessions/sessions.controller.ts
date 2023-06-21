@@ -29,22 +29,19 @@ export async function createSessionController(req: Request, res: Response, next:
         , { expiresIn: REFRESH_TOKEN_TTL })
     // return access and refresh token
 
-    res.cookie('access-token', accessToken, {
-        maxAge: 900000, // 15 mins
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production'
-    })
-
-    res.cookie('refresh-token', refreshToken, {
-        maxAge: 3.154e10, // 1yr
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production'
-    })
-    res.setHeader("authorization", `Bearer ${accessToken}`);
-    res.setHeader("x-refresh", refreshToken);
-
-
-    return res.send({ accessToken, refreshToken })
+res.setHeader("authorization", `Bearer ${accessToken}`);
+res.setHeader("x-refresh", refreshToken);
+res.cookie("access-token", accessToken, {
+  maxAge: 604800000, // 1 week
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+});
+res.cookie("refresh-token", refreshToken, {
+  maxAge: 3.154e10, // 1yr
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+});
+return res.send({ accessToken, refreshToken })
 }
 
 export async function getUserSessionsController(req: Request, res: Response) {

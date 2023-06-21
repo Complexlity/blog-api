@@ -54,7 +54,7 @@ export async function deleteComment(commentId: string) {
 
 export async function updateLike(userId: string, commentId: string) {
     const comment = await CommentModel.findById(commentId) as unknown as CommentDocument
-    console.log({ comment, userId, commentId })
+    
     if (!comment) throw new Error("Comment Not Found");
     const userIndex = comment.likes.indexOf(userId);
     if (userIndex === -1) {
