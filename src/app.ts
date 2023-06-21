@@ -13,23 +13,26 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+const corsConfig = {
+  origin: [
+    "https://blog-cms-mu.vercel.app/",
+    "http://localhost:3000",
+  ],
+  credentials: true,
+  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsConfig));
 
 app.use(morgan('dev'));
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN,
+//     credentials: true,
+//   })
+// );
   console.log(process.env.CORS_ORIGIN)
   app.use(cookieParser())
 app.use(express.json());
