@@ -20,7 +20,8 @@ app.use(
     origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
-  );
+);
+  console.log(process.env.CORS_ORIGIN)
   app.use(cookieParser())
 app.use(express.json());
 
