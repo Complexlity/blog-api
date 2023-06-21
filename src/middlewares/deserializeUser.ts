@@ -29,9 +29,7 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
               secure: process.env.NODE_ENV === "production",
             });
         }
-          console.log({ requestFromFetchingMe: req });
-            console.log({ responseFromFetchingMe: res });
-
+         
         return next()
     }
 

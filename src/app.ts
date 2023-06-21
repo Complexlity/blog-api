@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
   );
@@ -25,7 +25,6 @@ app.use(
 app.use(express.json());
 
 app.get<{}, MessageResponse>('/', (req, res) => {
-  console.log({cookies: req.cookies})
   res.json({
     message: 'Thank You For using Complex blog api',
   });

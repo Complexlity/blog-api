@@ -20,8 +20,6 @@ router.get<{}, MessageResponse>('/', (req, res) => {
 
 router.use(deserializeUser)
 router.use('/me', requireUser, (req, res) => {
-  console.log({ requestFromFetchingMe: req });
-  console.log({ responseFromFetchingMe: res });
   let user = res.locals.user
   res.json(omit(user, ['createdAt', 'updatedAt']))
 })
