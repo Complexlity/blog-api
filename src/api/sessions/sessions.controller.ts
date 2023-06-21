@@ -36,11 +36,12 @@ export async function createSessionController(req: Request, res: Response, next:
     })
 
     res.cookie('refresh-token', refreshToken, {
-        maxAge: 3.154e10, // 15 mins
+        maxAge: 3.154e10, // 1yr
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production'
     })
-
+    res.setHeader("authorization", `Bearer ${accessToken}`);
+    res.setHeader("x-refresh", refreshToken);
 
 
     return res.send({ accessToken, refreshToken })
