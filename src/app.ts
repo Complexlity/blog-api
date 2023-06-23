@@ -15,7 +15,7 @@ const app = express();
 
 const corsConfig = {
   origin: [
-    "https://blog-cms-mu.vercel.app/",
+    "https://blog-hed03m1mq-complexlity.vercel.app",
     "http://localhost:3000",
   ],
   credentials: true,
@@ -27,12 +27,12 @@ app.use(cors(corsConfig));
 
 app.use(morgan('dev'));
 app.use(helmet());
-// app.use(
-//   cors({
-//     origin: process.env.CORS_ORIGIN,
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
   console.log(process.env.CORS_ORIGIN)
   app.use(cookieParser())
 app.use(express.json());
