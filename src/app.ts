@@ -17,6 +17,7 @@ const corsConfig = {
   origin: [
     "https://blog-hed03m1mq-complexlity.vercel.app",
     "http://localhost:3000",
+    "https://blog-cms-git-cors-complexlity.vercel.app/login"
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
@@ -27,13 +28,6 @@ app.use(cors(corsConfig));
 
 app.use(morgan('dev'));
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
-  console.log(process.env.CORS_ORIGIN)
   app.use(cookieParser())
 app.use(express.json());
 
