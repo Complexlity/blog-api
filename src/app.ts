@@ -29,6 +29,21 @@ const corsConfig = {
 
 };
 app.use(cors(corsConfig));
+app.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://blog-cms-git-cors-complexlity.vercel.app"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
 // app.use((req, res, next) => {
 //       res.set({
 //         "content-security-policy":
