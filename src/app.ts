@@ -13,23 +13,47 @@ require('dotenv').config();
 
 const app = express();
 
+
+
+
+app.use(morgan('dev'));
+app.use(helmet());
+app.use(cookieParser())
+app.use(express.json());
 const corsConfig = {
   origin: [
     "https://blog-hed03m1mq-complexlity.vercel.app",
     "http://localhost:3000",
-    "https://blog-cms-git-cors-complexlity.vercel.app/login"
+    "https://blog-cms-git-cors-complexlity.vercel.app/login",
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
 };
-
 app.use(cors(corsConfig));
-
-app.use(morgan('dev'));
-app.use(helmet());
-  app.use(cookieParser())
-app.use(express.json());
+app.use((req, res, next) => {
+    res.set({
+      vary: "Origin",
+      "Content-type": "application/json",
+      "access-control-allow-credentials": "true",
+      "content-security-policy":
+        "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-embedder-policy": "require-corp",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "x-dns-prefetch-control": "off",
+      "x-frame-options": "SAMEORIGIN",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "x-download-options": "noopen",
+      "x-content-type-options": "nosniff",
+      "origin-agent-cluster": "?1",
+      "x-permitted-cross-domain-policies": "none",
+      "referrer-policy": "no-referrer",
+      "x-xss-protection": "0",
+    });
+  next()
+})
+app.use('/api/v1', api);
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
@@ -37,7 +61,6 @@ app.get<{}, MessageResponse>('/', (req, res) => {
   });
 });
 
-app.use('/api/v1', api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
