@@ -21,7 +21,10 @@ app.use(helmet());
 app.use(cookieParser())
 app.use(express.json());
 const corsConfig = {
-  origin: "*",
+  origin: [
+    "https://blog-cms-git-cors-complexlity.vercel.app",
+    "localhost:3000"
+  ],
   credentials: true,
 
 };
