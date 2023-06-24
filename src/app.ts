@@ -24,7 +24,7 @@ const corsConfig = {
   origin: [
     "https://blog-hed03m1mq-complexlity.vercel.app",
     "http://localhost:3000",
-    "https://blog-cms-git-cors-complexlity.vercel.app/",
+    "https://blog-cms-git-cors-complexlity.vercel.app",
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
@@ -48,7 +48,7 @@ app.use((req, res, next) => {
         "referrer-policy": "no-referrer",
         "x-xss-protection": "0",
         "access-control-allow-origin":
-          "https://blog-cms-git-cors-complexlity.vercel.app/",
+          "https://blog-cms-git-cors-complexlity.vercel.app",
         vary: "Origin",
         "access-control-allow-credentials": "true",
         "Content-Type": "application/json; charset=utf-8",
