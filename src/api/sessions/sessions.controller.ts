@@ -41,6 +41,7 @@ res.cookie("refresh-token", refreshToken, {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
 });
+    console.log(res)
 return res.send({ accessToken, refreshToken })
 }
 

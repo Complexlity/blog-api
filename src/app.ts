@@ -28,7 +28,6 @@ const corsConfig = {
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
 };
 app.use(cors(corsConfig));
 app.use((req, res, next) => {
@@ -56,6 +55,7 @@ app.use((req, res, next) => {
   next()
 })
 app.use('/api/v1', api);
+
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
