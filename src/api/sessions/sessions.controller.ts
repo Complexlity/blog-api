@@ -32,16 +32,18 @@ export async function createSessionController(req: Request, res: Response, next:
 res.setHeader("authorization", `Bearer ${accessToken}`);
 res.setHeader("x-refresh", refreshToken);
 res.cookie("access-token", accessToken, {
-  maxAge: 604800000, // 1 week
-  httpOnly: true,
+    maxAge: 604800000, // 1 week
+    httpOnly: true,
+  sameSite: 'none',
   secure: process.env.NODE_ENV === "production",
 });
 res.cookie("refresh-token", refreshToken, {
   maxAge: 3.154e10, // 1yr
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  sameSite: 'none',
+    secure: process.env.NODE_ENV === "production",
 });
-    console.log(res)
+
 return res.send({ accessToken, refreshToken })
 }
 
@@ -51,10 +53,15 @@ export async function getUserSessionsController(req: Request, res: Response) {
     return res.send(sessions)
 }
 
+const sameSiteSecure = {
+  sameSite: "none",
+  secure: true,
+} as const
+
 export async function deleteSessionsController(req: Request, res: Response) {
     const sessionId = res.locals.user.session
-    res.clearCookie("access-token");
-    res.clearCookie("refresh-token");
+    res.clearCookie("access-token", sameSiteSecure);
+    res.clearCookie("refresh-token", sameSiteSecure);
     res.removeHeader("authorization");
     res.removeHeader("x-refresh");
     await updateSession({ _id: sessionId, }, { valid: false })
