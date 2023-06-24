@@ -34,14 +34,16 @@ res.setHeader("x-refresh", refreshToken);
 res.cookie("access-token", accessToken, {
     maxAge: 604800000, // 1 week
     httpOnly: true,
-  sameSite: 'none',
-  secure: process.env.NODE_ENV === "production",
+    sameSite: 'none',
+  secure: true,
+//   secure: process.env.NODE_ENV === "production",
 });
 res.cookie("refresh-token", refreshToken, {
   maxAge: 3.154e10, // 1yr
   httpOnly: true,
   sameSite: 'none',
-    secure: process.env.NODE_ENV === "production",
+    // secure: process.env.NODE_ENV === "production",
+  secure: true
 });
 
 return res.send({ accessToken, refreshToken })
