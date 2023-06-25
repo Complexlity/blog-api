@@ -7,7 +7,7 @@ const { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } = process.env
 
 export async function createSessionController(req: Request, res: Response, next: NextFunction) {
     // Validate user password
-    let { email, password } = req.body
+  let { email, password } = req.body
     const user = await validatePassword(email, password)
 
     if (!user) {
