@@ -1,7 +1,7 @@
 import { FilterQuery } from "mongoose";
 import { PostModel, PostDocument } from "./posts.model";
 import { CommentModel } from "../comments/comments.model";
-
+import mongoose from 'mongoose'
 
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     return await PostModel.find(query).sort({ createdAt: -1 }).populate({
@@ -63,10 +63,8 @@ export async function deletePost(postId: string) {
         if (!deletedPost) throw new Error('Post not found');
 
         const commentIds = deletedPost.comments;
-        return deletedPost;
         await CommentModel.deleteMany({ _id: { $in: commentIds } }, { session });
         await PostModel.findByIdAndDelete(postId, { session });
-
         await session.commitTransaction();
         return deletedPost;
     } catch (error: any) {
