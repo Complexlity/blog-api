@@ -2,6 +2,7 @@ import { FilterQuery } from "mongoose";
 import { PostModel, PostDocument } from "./posts.model";
 import { CommentModel } from "../comments/comments.model";
 
+
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     return await PostModel.find(query).sort({ createdAt: -1 }).populate({
         path: 'author',
@@ -17,6 +18,9 @@ export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
 }
 export async function getSinglePost(postId: string) {
     const post = await PostModel.findById(postId).populate({
+        path: 'author',
+        select: 'name'
+    }).populate({
         path: 'comments',
         select: "comment user likeCount likes createdAt",
         populate: {

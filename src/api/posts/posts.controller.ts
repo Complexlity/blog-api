@@ -23,7 +23,6 @@ export async function getAllPostsController(req: Request, res: Response, next: N
 
 export async function getSinglePostController(req: Request, res: Response, next: NextFunction) {
     const postId = req.params.postId
-    console.log(postId)
     try {
         if (!postId) {
             res.status(400)
@@ -64,13 +63,16 @@ export async function updateLikeController(req: Request, res: Response, next: Ne
 
 export async function deletePostController(req: Request, res: Response, next: NextFunction) {
     const postId = req.params.postId
-    const user = res.locals.user._id
+    const user = res.locals.user
+    const userId = user._id
+    const userRole = user.role
     try {
+
         if (!postId) {
             res.status(403)
             throw new Error("Post Value is Missing from Request")
         }
-        if (postId !== user) {
+        if (postId !== userId && userRole !== 'Admin' ) {
             res.status(401)
             throw new Error("You are not authorized to delete this post")
         }
