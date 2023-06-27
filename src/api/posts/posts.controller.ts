@@ -77,7 +77,7 @@ export async function deletePostController(req: Request, res: Response, next: Ne
             throw new Error("You are not authorized to delete this post")
         }
         let deletedPost = await deletePost(postId)
-        res.sendStatus(200).json(deletedPost)
+        res.send(deletedPost)
     } catch (error) {
         next(error)
     }
