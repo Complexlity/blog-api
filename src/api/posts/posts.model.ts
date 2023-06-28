@@ -16,7 +16,7 @@ export interface PostDocument extends mongoose.Document {
 
 
 const PostSchema = new mongoose.Schema({
-    title: { type: String, required: true, minLength: 1, maxLength: 30 },
+    title: { type: String, required: true, minLength: 1, maxLength: 100 },
     content: { type: String, required: true, minLength: 1, maxLength: 1000 },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     published: { type: Boolean, default: false },

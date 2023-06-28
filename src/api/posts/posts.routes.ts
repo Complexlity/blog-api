@@ -10,10 +10,10 @@ const router = Router()
 router.post('/:postId/comments', requireUser, validateRequest(CommentSchema), createCommentController)
 router.get("/:postId/comments", getPostCommentsController)
 
-router.post('/create', requireUser, validateRequest(PostSchema), createPostController)
 router.get('/:postId', getSinglePostController)
 router.put('/:postId', requireUser, updateLikeController)
 router.delete('/:postId', requireUser, deletePostController)
+router.post('/', requireUser, validateRequest(PostSchema), createPostController)
 router.get('/', getAllPostsController)
 
 export default router
