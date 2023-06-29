@@ -3,6 +3,7 @@ import { PostModel, PostDocument } from "./posts.model";
 import { CommentModel } from "../comments/comments.model";
 import mongoose from 'mongoose'
 import { ObjectId } from "mongodb";
+import UserModel, { UserDocument } from "../users/users.model";
 
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     return await PostModel.find(query).sort({ createdAt: -1 }).populate({
@@ -43,11 +44,12 @@ export async function createPost(query: FilterQuery<PostDocument>) {
     return post
 }
 
-export async function updatePost(query: FilterQuery<PostDocument>) {
-
+export async function updatePost(query: FilterQuery<PostDocument>, user: UserDocument) {
+    const userId = user._id
+    const userRole = user.role
     const post = await getSinglePost(query.id)
-    if (post.author._id.toString() !== query.author) {
-        let error = new Error("Author Not The Same");
+    if (post.author._id.toString() !== query.author && userRole !== "Admin") {
+        let error = new Error("You are not authorized to update this post");
         error.cause = 403;
         throw error;
     }
@@ -76,14 +78,30 @@ export async function updateLike(userId: string, postId: string) {
     return post
 }
 
-export async function deletePost(postId: string) {
+export async function deletePost(postId: string, user: UserDocument) {
+    const userId = user._id
+    const userRole = user.role
+    if (!postId) {
+        let error = new Error("Post Value is Missing from Request");
+        error.cause = 404
+        throw error
+    }
+
     const session = await mongoose.startSession()
     session.startTransaction();
 
     try {
         const deletedPost = await PostModel.findById(postId, null, { session });
-        if (!deletedPost) throw new Error('Post not found');
-
+        if (!deletedPost) {
+        let error = new Error("Post Value is Missing from Request");
+            error.cause = 404
+            throw error
+        }
+        if (deletedPost.author !== userId && userRole !== "Admin") {
+        let error = new Error("You are not authorized to delete this post");
+        error.cause = 401
+        throw error;
+        }
         const commentIds = deletedPost.comments;
         await CommentModel.deleteMany({ _id: { $in: commentIds } }, { session });
         await PostModel.findByIdAndDelete(postId, { session });

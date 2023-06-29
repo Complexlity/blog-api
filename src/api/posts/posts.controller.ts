@@ -16,7 +16,7 @@ export async function createPostController(req: Request, res: Response, next: Ne
 export async function updatePostController(req: Request, res: Response, next: NextFunction) {
     let user = res.locals.user
     try {
-        const post = await updatePost({ author: user._id, id: req.body.id, title: req.body.title, content: req.body.content })
+        const post = await updatePost({ id: req.body.id, title: req.body.title, content: req.body.content }, user)
         res.send(post)
     } catch (error: any) {
         console.log(error)
@@ -80,19 +80,14 @@ export async function deletePostController(req: Request, res: Response, next: Ne
     const user = res.locals.user
     const userId = user._id
     const userRole = user.role
-    try {
 
-        if (!postId) {
-            res.status(403)
-            throw new Error("Post Value is Missing from Request")
-        }
-        if (postId !== userId  ) {
-            res.status(401)
-            throw new Error("You are not authorized to delete this post")
-        }
-        let deletedPost = await deletePost(postId)
+    try {
+        let deletedPost = await deletePost(postId, user)
         res.send(deletedPost)
-    } catch (error) {
+    } catch (error: any) {
+        if (error.cause === 401 || error.cause === 404) {
+            res.status = error.cause
+        }
         next(error)
     }
 }
