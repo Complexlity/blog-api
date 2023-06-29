@@ -11,6 +11,14 @@ const PostSchema = z.object({
     })
 })
 
+const PostSchemaWithId = PostSchema.extend({
+  body: PostSchema.shape.body.extend({
+    id: z.string(),
+  }),
+});
+
+
+type PostSchemaWithId = z.infer<typeof PostSchemaWithId>
 type PostSchema = z.infer<typeof PostSchema>
 
-export { PostSchema }
+export { PostSchema, PostSchemaWithId }

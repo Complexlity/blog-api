@@ -27,7 +27,7 @@ const corsConfig = {
     "https://blog-cms-complexlity.vercel.app",
   ],
   credentials: true,
-  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  methods: "GET,HEAD,OPTIONS,PUT,POST,DELETE, PATCH",
 };
 // app.use(cors())
 app.use(cors(corsConfig));

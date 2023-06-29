@@ -2,6 +2,7 @@ import { FilterQuery } from "mongoose";
 import { PostModel, PostDocument } from "./posts.model";
 import { CommentModel } from "../comments/comments.model";
 import mongoose from 'mongoose'
+import { ObjectId } from "mongodb";
 
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     return await PostModel.find(query).sort({ createdAt: -1 }).populate({
@@ -17,6 +18,7 @@ export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
     })
 }
 export async function getSinglePost(postId: string) {
+    console.log({postId})
     const post = await PostModel.findById(postId).populate({
         path: 'author',
         select: 'name'
@@ -28,12 +30,32 @@ export async function getSinglePost(postId: string) {
             select: 'name'
         }
     })
+    if (!post) {
+      let error = new Error("Post Not Found");
+      error.cause = 404;
+      throw error;
+    }
     return post
 }
 
 export async function createPost(query: FilterQuery<PostDocument>) {
     let post = (await PostModel.create(query)).populate('author')
     return post
+}
+
+export async function updatePost(query: FilterQuery<PostDocument>) {
+
+    const post = await getSinglePost(query.id)
+    if (post.author._id.toString() !== query.author) {
+        let error = new Error("Author Not The Same");
+        error.cause = 403;
+        throw error;
+    }
+
+    post.title = query.title
+    post.content = query.content
+    await post.save()
+  return post;
 }
 
 export async function updateLike(userId: string, postId: string) {

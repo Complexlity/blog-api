@@ -4,6 +4,7 @@ import { AnyZodObject, z, } from 'zod'
 type Schema = AnyZodObject | z.ZodEffects<any, any>
 
 const validate = (schema: Schema) => function (req: Request, res: Response, next: NextFunction) {
+    console.log({ body: req.body})
     try {
         schema.parse({
             body: req.body,

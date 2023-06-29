@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { getAllPostsController, createPostController, getPostCommentsController, updateLikeController, getSinglePostController, deletePostController } from './posts.controller'
-import { PostSchema } from './posts.schema'
+import { getAllPostsController, updatePostController, createPostController, getPostCommentsController, updateLikeController, getSinglePostController, deletePostController } from './posts.controller'
+import { PostSchema, PostSchemaWithId } from './posts.schema'
 import validateRequest from '../../middlewares/validateRequest'
 import requireUser from '../../middlewares/requireUser'
 import { CommentSchema } from '../comments/comments.schema'
@@ -11,6 +11,7 @@ router.post('/:postId/comments', requireUser, validateRequest(CommentSchema), cr
 router.get("/:postId/comments", getPostCommentsController)
 
 router.get('/:postId', getSinglePostController)
+router.patch("/:postId", requireUser, validateRequest(PostSchemaWithId), updatePostController);
 router.put('/:postId', requireUser, updateLikeController)
 router.delete('/:postId', requireUser, deletePostController)
 router.post('/', requireUser, validateRequest(PostSchema), createPostController)
