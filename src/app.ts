@@ -23,6 +23,7 @@ app.use(express.json());
 const corsConfig = {
   origin: [
     "http://localhost:3000",
+    "http://localhost:3001",
     "https://blog-cms-git-cors-complexlity.vercel.app",
     "https://blog-cms-complexlity.vercel.app",
   ],
