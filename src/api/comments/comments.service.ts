@@ -10,14 +10,23 @@ export async function getComments(query: FilterQuery<CommentDocument>) {
 export async function createComment(userId: string, postId: string, comment: string) {
     let session = await mongoose.startSession()
     session.startTransaction()
+    let populatedComments;
+    let newComment
     try {
-        let newComment = await CommentModel.create([{ user: userId, post: postId, comment }], { session }) as Partial<CommentDocument>[]
-
         const post = await PostModel.findById(postId, null, { session })
+        if (!post) {
+            console.log('Post does not exist')
+            throw new Error('Post Not Found')
+        }
+
+        newComment = await CommentModel.create([{ user: userId, post: postId, comment }], { session }) as Partial<CommentDocument>[]
+       newComment = await CommentModel.populate(newComment, { path: "user", select: "name" });
+
         //@ts-ignore
-        post?.comments.push(newComment[0]._id)
-        await post?.save({ session })
+        post.comments.push(newComment[0]._id)
+        await post.save({ session })
         await session.commitTransaction()
+
     }
     //@ts-ignore
     catch (error: any) {
@@ -26,8 +35,9 @@ export async function createComment(userId: string, postId: string, comment: str
     }
     finally {
         await session.endSession()
-    }
 
+    }
+    return newComment[0]
 }
 
 export async function deleteComment(commentId: string) {
@@ -54,7 +64,7 @@ export async function deleteComment(commentId: string) {
 
 export async function updateLike(userId: string, commentId: string) {
     const comment = await CommentModel.findById(commentId) as unknown as CommentDocument
-    
+
     if (!comment) throw new Error("Comment Not Found");
     const userIndex = comment.likes.indexOf(userId);
     if (userIndex === -1) {

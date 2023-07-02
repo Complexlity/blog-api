@@ -1,25 +1,25 @@
-import { FilterQuery } from "mongoose";
-import { PostModel, PostDocument } from "./posts.model";
+import mongoose, { FilterQuery } from 'mongoose';
 import { CommentModel } from "../comments/comments.model";
-import mongoose from 'mongoose'
-import { ObjectId } from "mongodb";
-import UserModel, { UserDocument } from "../users/users.model";
+import { PostDocument, PostModel } from "./posts.model";
+import { UserDocument } from "../users/users.model";
 
 export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
-    return await PostModel.find(query).sort({ createdAt: -1 }).populate({
-        path: 'author',
-        select: 'name'
-    }).populate({
-        path: 'comments',
-        select: "comment user likeCount likes",
+    return await PostModel.find(query)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "author",
+        select: "name",
+      })
+      .populate({
+        path: "comments",
+        select: "comment user likeCount likes createdAt",
         populate: {
-            path: 'user',
-            select: 'name'
-        }
-    })
+          path: "user",
+          select: "name",
+        },
+      });
 }
 export async function getSinglePost(postId: string) {
-    console.log({postId})
     const post = await PostModel.findById(postId).populate({
         path: 'author',
         select: 'name'

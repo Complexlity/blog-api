@@ -4,6 +4,7 @@ const requireUser = (req: Request, res: Response, next: NextFunction) => {
     const user = res.locals.user
     if (!user) {
         res.status(403)
+        console.log("I am here")
         return res.json({message: "Please Login to Continue"})
     }
     return next()

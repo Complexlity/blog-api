@@ -5,8 +5,9 @@ export async function createCommentController(req: Request, res: Response, next:
     const userId = res.locals.user._id
     const postId = req.params.postId
     try {
-        await createComment(userId, postId, req.body.comment)
-        res.status(201).send({ status: 201, message: "Comment Created Successfully" })
+        const newComment = await createComment(userId, postId, req.body.comment)
+        console.log({newComment})
+        res.status(201).json(newComment)
 
     } catch (error: any) {
         next(error)

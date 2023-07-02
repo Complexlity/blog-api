@@ -52,6 +52,7 @@ export async function getSinglePostController(req: Request, res: Response, next:
 
 
 export async function getPostCommentsController(req: Request, res: Response) {
+    console.log({ query: req.params })
     const postId = req.params.postId
     if (!postId) res.sendStatus(404)
     const post = await getSinglePost(postId)
