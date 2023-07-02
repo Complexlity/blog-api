@@ -27,8 +27,10 @@ export async function updatePostController(req: Request, res: Response, next: Ne
 }
 
 export async function getAllPostsController(req: Request, res: Response, next: NextFunction) {
+    const published = !!req.query.published
     try {
-        const posts = await getAllPosts()
+
+        const posts = await getAllPosts({published})
         res.json(posts)
     } catch (error: any) {
         next(error)
