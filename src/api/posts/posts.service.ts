@@ -53,9 +53,10 @@ export async function updatePost(query: FilterQuery<PostDocument>, user: UserDoc
         error.cause = 403;
         throw error;
     }
+post.title = query.title ?? post.title;
+post.content = query.content ?? post.content;
+post.published = query.published ?? post.published;
 
-    post.title = query.title
-    post.content = query.content
     await post.save()
   return post;
 }

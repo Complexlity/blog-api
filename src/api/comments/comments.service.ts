@@ -15,7 +15,6 @@ export async function createComment(userId: string, postId: string, comment: str
     try {
         const post = await PostModel.findById(postId, null, { session })
         if (!post) {
-            console.log('Post does not exist')
             throw new Error('Post Not Found')
         }
 

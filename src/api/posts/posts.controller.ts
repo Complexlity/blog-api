@@ -14,12 +14,13 @@ export async function createPostController(req: Request, res: Response, next: Ne
 }
 
 export async function updatePostController(req: Request, res: Response, next: NextFunction) {
+    const postId = req.params.postId;
     let user = res.locals.user
+    const published = req.body.published
     try {
-        const post = await updatePost({ id: req.body.id, title: req.body.title, content: req.body.content }, user)
+        const post = await updatePost({ id: postId, title: req.body.title, content: req.body.content, published }, user)
         res.send(post)
     } catch (error: any) {
-        console.log(error)
         res.statusCode = error.cause
         next(error)
 
@@ -27,10 +28,22 @@ export async function updatePostController(req: Request, res: Response, next: Ne
 }
 
 export async function getAllPostsController(req: Request, res: Response, next: NextFunction) {
-    const published = !!req.query.published
-    try {
+    let published;
+    switch (req.query.published) {
+      case "true":
+        published = true;
+        break;
+      case "false":
+        published = false;
+        break;
+      default:
+        published = undefined;
+        break;
+    }
 
-        const posts = await getAllPosts({published})
+    try {
+        const posts = await getAllPosts(published === undefined ? {} : {published});
+
         res.json(posts)
     } catch (error: any) {
         next(error)
@@ -54,7 +67,6 @@ export async function getSinglePostController(req: Request, res: Response, next:
 
 
 export async function getPostCommentsController(req: Request, res: Response) {
-    console.log({ query: req.params })
     const postId = req.params.postId
     if (!postId) res.sendStatus(404)
     const post = await getSinglePost(postId)
