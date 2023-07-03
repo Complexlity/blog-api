@@ -34,7 +34,7 @@ export async function getAllUsersController(req: Request, res: Response, next: N
 export async function patchUserController(req: Request, res: Response, next: NextFunction) {
     const user: Partial<UserDocument> = res.locals.user
     if (user.role === "Admin") {
-        res.send({ message: "Already An Admin" , user})
+        res.status(409).json({ message: "Already An Admin" , user})
         return
     }
     const adminSecretKey = req.body.adminSecretKey;
@@ -44,7 +44,7 @@ export async function patchUserController(req: Request, res: Response, next: Nex
     }
     try {
         await patchUser(user._id)
-        res.json({message: "Successfully Changed Status", user: {...user, role: "Admin"}})
+        return res.json({message: "Successfully Changed Status", user: {...user, role: "Admin"}})
     } catch (error) {
         next(error)
     }
