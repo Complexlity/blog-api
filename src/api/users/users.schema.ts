@@ -22,4 +22,16 @@ const UserSchema = z.object({
 
 type UserSchema = z.infer<typeof UserSchema>
 
+const UserPatchSchema = z.object({
+    body: z.object({
+        adminSecretKey: z.string({
+            required_error: "Admin Key is Required"
+        }
+        )
+    })
+})
+
+type UserPatchSchema = z.infer<typeof UserPatchSchema>
+export { UserPatchSchema }
+
 export default UserSchema

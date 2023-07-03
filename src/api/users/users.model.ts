@@ -5,7 +5,7 @@ export interface UserDocument extends Document {
     email: string;
     name: string;
     password: string;
-    role: string;
+    role: "Admin" | "Member";
     createdAt: Date;
     updatedAt: Date;
     comparePassword(candidatePassword: string): Promise<Boolean>

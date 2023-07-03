@@ -46,7 +46,7 @@ export async function createPost(query: FilterQuery<PostDocument>) {
 
 export async function updatePost(query: FilterQuery<PostDocument>, user: UserDocument) {
     const userId = user._id
-    const userRole = user.role
+    let userRole = user.role
     const post = await getSinglePost(query.id)
     if (post.author._id.toString() !== query.author && userRole !== "Admin") {
         let error = new Error("You are not authorized to update this post");

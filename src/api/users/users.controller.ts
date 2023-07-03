@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { log } from "../../utils/logger";
-import { createUser, getUsers } from "./users.service";
+import { createUser, getUsers, patchUser } from "./users.service";
 import UserSchema from "./users.schema";
 import { omit } from 'lodash'
 import getErrorMessage from '../../utils/getErrorMessage'
+import { UserDocument } from "./users.model";
 require('dotenv').config()
 
 export async function createUserController(req: Request<{}, {}, UserSchema>, res: Response, next: NextFunction) {
@@ -27,4 +28,25 @@ export async function getAllUsersController(req: Request, res: Response, next: N
         next(error)
 
     }
+}
+
+
+export async function patchUserController(req: Request, res: Response, next: NextFunction) {
+    const user: Partial<UserDocument> = res.locals.user
+    if (user.role === "Admin") {
+        res.send({ message: "Already An Admin" , user})
+        return
+    }
+    const adminSecretKey = req.body.adminSecretKey;
+    const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY
+    if (adminSecretKey !== ADMIN_SECRET_KEY) {
+        return res.status(401).json({message: "Invalid Secret Key"})
+    }
+    try {
+        await patchUser(user._id)
+        res.json({message: "Successfully Changed Status", user: {...user, role: "Admin"}})
+    } catch (error) {
+        next(error)
+    }
+
 }

@@ -35,3 +35,8 @@ export async function validatePassword(email: string, password: string) {
 export async function findUser(query: FilterQuery<UserDocument>) {
     return await UserModel.find(query)
 }
+
+export async function patchUser(userId: string) {
+    await UserModel.findByIdAndUpdate(userId, { role: "Admin" })
+    
+}

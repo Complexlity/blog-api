@@ -8,7 +8,6 @@ import { deserializeUser } from '../middlewares/deserializeUser';
 import requireUser from '../middlewares/requireUser';
 import { omit } from 'lodash';
 
-
 const router = express.Router()
 
 
@@ -24,6 +23,7 @@ router.use('/me', requireUser, (req, res) => {
   res.json(omit(user, ['createdAt', 'updatedAt']))
 
 })
+
 router.use('/users', users)
 router.use('/sessions', sessions)
 router.use('/posts', posts)
