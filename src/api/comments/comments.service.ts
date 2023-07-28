@@ -8,56 +8,48 @@ export async function getComments(query: FilterQuery<CommentDocument>) {
 }
 
 export async function createComment(userId: string, postId: string, comment: string) {
-    let session = await mongoose.startSession()
-    session.startTransaction()
-    let populatedComments;
+    // let session = await mongoose.startSession({
+    //   defaultTransactionOptions: { writeConcern: { w: "majority" } },
+    // });
+    // session.startTransaction()
     let newComment
     try {
-        const post = await PostModel.findById(postId, null, { session })
+        const post = await PostModel.findById(postId, null)
         if (!post) {
             throw new Error('Post Not Found')
         }
 
-        newComment = await CommentModel.create([{ user: userId, post: postId, comment }], { session }) as Partial<CommentDocument>[]
+        newComment = await CommentModel.create([{ user: userId, post: postId, comment }]) as Partial<CommentDocument>[]
        newComment = await CommentModel.populate(newComment, { path: "user", select: "name" });
 
         //@ts-ignore
         post.comments.push(newComment[0]._id)
-        await post.save({ session })
-        await session.commitTransaction()
+        await post.save()
+
 
     }
     //@ts-ignore
     catch (error: any) {
-        await session.abortTransaction()
         throw new Error(error.message)
     }
-    finally {
-        await session.endSession()
 
-    }
     return newComment[0]
 }
 
 export async function deleteComment(commentId: string) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
-        const deletedComment = await CommentModel.findByIdAndDelete(commentId, { session });
+        const deletedComment = await CommentModel.findByIdAndDelete(commentId);
         //@ts-ignore
         const postId = deletedComment.post;
-        const post = await PostModel.findById(postId, null, { session });
+        const post = await PostModel.findById(postId, null);
         //@ts-ignore
         post.comments = post.comments.filter((comment: string) => comment !== commentId);
-        await post?.save({ session });
-        await session.commitTransaction();
+        await post?.save();
+
         return deletedComment;
     } catch (error: any) {
-        await session.abortTransaction();
         throw new Error(error.message);
-    } finally {
-        await session.endSession();
     }
 }
 
