@@ -4,7 +4,7 @@ import { CommentDocument } from "../comments/comments.model";
 
 export interface PostDocument extends mongoose.Document {
     title: string
-    content: string
+    content: any
     author: UserDocument['_id']
     published: boolean
     comments: CommentDocument['_id'][]

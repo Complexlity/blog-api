@@ -20,17 +20,24 @@ export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
       });
 }
 export async function getSinglePost(postId: string) {
-    const post = await PostModel.findById(postId).populate({
-        path: 'author',
-        select: 'name'
-    }).populate({
-        path: 'comments',
+    const post = await PostModel.findById(postId)
+      .populate({
+        path: "author",
+        select: "name",
+      })
+      .populate({
+        path: "comments",
         select: "comment user likeCount likes createdAt",
         populate: {
-            path: 'user',
-            select: 'name'
-        }
-    })
+          path: "user",
+          select: "name",
+        },
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
+      });
     if (!post) {
       let error = new Error("Post Not Found");
       error.cause = 404;

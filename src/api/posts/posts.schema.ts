@@ -6,8 +6,8 @@ const PostSchema = z.object({
             required_error: "Post title cannot be empty"
         }).min(1).max(100, "Title must be at most 100 characters"),
         content: z.string({
-            required_error: "Post content cannot be empty"
-        }).min(1).max(1000, "Content must be at most 1000 characters"),
+            required_error: "Post content must be provided"
+        }),
         published: z.boolean().optional(),
     }).partial()
 })

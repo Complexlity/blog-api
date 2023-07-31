@@ -5,6 +5,7 @@ export interface UserDocument extends Document {
     email: string;
     name: string;
     password: string;
+    imageSrc: string;
     role: "Admin" | "Member";
     createdAt: Date;
     updatedAt: Date;
@@ -15,6 +16,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     password: { type: String, required: true },
+    imageSrc: { type: String, required: true},
     role: { type: String, default: "Member"}
 
 }, { timestamps: true })

@@ -12,11 +12,12 @@ const UserSchema = z.object({
             required_error: "Password Confirmation is required"
         }),
         email: string({ required_error: "Email is Required" }).email("Invalid email address provided"),
+        imageSrc: string({required_error: "No image source specified"})
     }).transform(function (body) {
         if (body.password !== body.passwordConfirmation) {
             throw new Error("Passwords do not match")
         }
-        return { name: body.name, email: body.email, password: body.password }
+        return { name: body.name, email: body.email, password: body.password, imageSrc: body.imageSrc }
     })
 })
 
