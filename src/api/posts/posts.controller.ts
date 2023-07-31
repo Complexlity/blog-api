@@ -3,7 +3,6 @@ import { getAllPosts, createPost, getSinglePost, updateLike, deletePost, updateP
 
 
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
-    console.log("I reached here")
     let user = res.locals.user
     try {
         const post = await createPost({ author: user._id, title: req.body.title, content: req.body.content, published: req.body.published ?? false })

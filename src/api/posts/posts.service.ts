@@ -30,7 +30,7 @@ export async function getSinglePost(postId: string) {
         select: "comment user likeCount likes createdAt",
         populate: {
           path: "user",
-          select: "name",
+          select: "name imageSrc",
         },
         options: {
           sort: {
