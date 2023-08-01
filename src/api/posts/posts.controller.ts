@@ -5,7 +5,7 @@ import { getAllPosts, createPost, getSinglePost, updateLike, deletePost, updateP
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
     let user = res.locals.user
     try {
-        const post = await createPost({ author: user._id, title: req.body.title, content: req.body.content, published: req.body.published ?? false })
+        const post = await createPost({ author: user._id, title: req.body.title, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource })
         res.send(post)
     } catch (error: any) {
         next(error)

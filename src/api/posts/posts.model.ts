@@ -7,8 +7,10 @@ export interface PostDocument extends mongoose.Document {
     content: any
     author: UserDocument['_id']
     published: boolean
+    coverImageSource: string
     comments: CommentDocument['_id'][]
     likes: UserDocument['_id'][]
+
     likeCount: number
     createdAt: Date
     updatedAt: Date
@@ -20,9 +22,10 @@ const PostSchema = new mongoose.Schema({
     content: { type: String, required: true, minLength: 1, maxLength: 1000 },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     published: { type: Boolean, default: false },
+    coverImageSource: {type: String},
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    likeCount: { type: Number, default: 0 }
+    likeCount: { type: Number, default: 0 },
 
 }, { timestamps: true })
 
