@@ -23,7 +23,7 @@ export async function getSinglePost(postId: string) {
     const post = await PostModel.findById(postId)
       .populate({
         path: "author",
-        select: "name",
+        select: "name imageSrc",
       })
       .populate({
         path: "comments",
