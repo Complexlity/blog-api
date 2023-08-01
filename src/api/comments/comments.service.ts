@@ -20,7 +20,7 @@ export async function createComment(userId: string, postId: string, comment: str
         }
 
         newComment = await CommentModel.create([{ user: userId, post: postId, comment }]) as Partial<CommentDocument>[]
-       newComment = await CommentModel.populate(newComment, { path: "user", select: "name" });
+       newComment = await CommentModel.populate(newComment, { path: "user", select: "name imageSrc" });
 
         //@ts-ignore
         post.comments.push(newComment[0]._id)
