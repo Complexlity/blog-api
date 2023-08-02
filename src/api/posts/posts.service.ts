@@ -8,14 +8,14 @@ export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
       .sort({ createdAt: -1 })
       .populate({
         path: "author",
-        select: "name",
+        select: "name imageSrc",
       })
       .populate({
         path: "comments",
         select: "comment user likeCount likes createdAt",
         populate: {
           path: "user",
-          select: "name",
+          select: "name imageSrc",
         },
       });
 }
