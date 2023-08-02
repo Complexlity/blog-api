@@ -9,7 +9,7 @@ const PostSchema = z.object({
             required_error: "Post content must be provided"
         }),
         published: z.boolean().optional(),
-        coverImageSource: z.string().optional()
+        coverImageSource: z.string()
     })
 })
 
