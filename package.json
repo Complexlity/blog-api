@@ -4,7 +4,7 @@
   "description": " ",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "tsc && node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "lint": "eslint --fix src test",
@@ -28,6 +28,7 @@
     "mongoose": "^7.2.1",
     "morgan": "^1.10.0",
     "pino": "^8.14.1",
+    "tsc": "^2.0.4",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
