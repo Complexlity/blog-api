@@ -32,6 +32,7 @@ const corsConfig = {
   methods: "GET,HEAD,OPTIONS,PUT,POST,DELETE,PATCH",
 };
 // app.use(cors())
+ app.set("trust proxy", true);
 app.use(cors(corsConfig));
 // app.use((req, res, next) => {
 //       res.set({
