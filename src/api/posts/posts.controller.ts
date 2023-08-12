@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from 'express'
 import { getAllPosts, createPost, getSinglePost, updateLike, deletePost, updatePost } from './posts.service'
-
+import slugify from 'slugify'
 
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
     let user = res.locals.user
+    let title = req.body.title
+    const slug = slugify(title, {
+        lower: true,
+        strict: true
+    })
     try {
-        const post = await createPost({ author: user._id, title: req.body.title, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource })
+        const post = await createPost({ author: user._id, title, slug, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource, category: req.body.category })
         res.send(post)
     } catch (error: any) {
         next(error)
@@ -51,13 +56,13 @@ export async function getAllPostsController(req: Request, res: Response, next: N
 }
 
 export async function getSinglePostController(req: Request, res: Response, next: NextFunction) {
-    const postId = req.params.postId
+    const slug = req.params.slug
     try {
-        if (!postId) {
+        if (!slug) {
             res.status(400)
             throw new Error("PostID is required")
         }
-        const post = await getSinglePost(postId)
+        const post = await getSinglePost(slug)
         res.json(post)
     } catch (error: any) {
         next(error)

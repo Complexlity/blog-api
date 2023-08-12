@@ -19,8 +19,8 @@ export async function getAllPosts(query: FilterQuery<PostDocument> = {}) {
         },
       });
 }
-export async function getSinglePost(postId: string) {
-    const post = await PostModel.findById(postId)
+export async function getSinglePost(slug: string) {
+    const post = await PostModel.findOne({slug})
       .populate({
         path: "author",
         select: "name imageSrc",

@@ -4,6 +4,7 @@ import { CommentDocument } from "../comments/comments.model";
 
 export interface PostDocument extends mongoose.Document {
     title: string
+    slug: string
     content: any
     author: UserDocument['_id']
     published: boolean
@@ -17,18 +18,26 @@ export interface PostDocument extends mongoose.Document {
 }
 
 
-const PostSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema(
+  {
     title: { type: String, required: true, minLength: 1, maxLength: 100 },
+    slug: { type: String, required: true, minLength: 1, maxLength: 100 },
     content: { type: String, required: true, minLength: 1, maxLength: 1000 },
-    author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     published: { type: Boolean, default: false },
     coverImageSource: { type: String },
-    category: { type: String},
+    category: { type: String },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     likeCount: { type: Number, default: 0 },
-
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
 
 const PostModel = mongoose.model<PostDocument>("Post", PostSchema)

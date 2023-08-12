@@ -10,7 +10,7 @@ const router = Router()
 router.post('/:postId/comments', requireUser, validateRequest(CommentSchema), createCommentController)
 router.get("/:postId/comments", getPostCommentsController)
 
-router.get('/:postId', getSinglePostController)
+router.get('/:slug', getSinglePostController)
 router.patch("/:postId", requireUser, validateRequest(PostUpdateSchema), updatePostController);
 router.put('/:postId', requireUser, updateLikeController)
 router.delete('/:postId', requireUser, deletePostController)
