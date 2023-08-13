@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "lint": "eslint --fix src test",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "vercel--build": "echo hello"
   },
   "license": "MIT",
   "dependencies": {
