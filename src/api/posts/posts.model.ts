@@ -22,7 +22,7 @@ const PostSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, minLength: 1, maxLength: 100 },
     slug: { type: String, required: true, minLength: 1, maxLength: 100 },
-    content: { type: String, required: true, minLength: 1, maxLength: 1000 },
+    content: { type: String, required: true, minLength:10,  },
 
     author: {
       type: mongoose.Schema.Types.ObjectId,
