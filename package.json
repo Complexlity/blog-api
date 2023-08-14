@@ -2,9 +2,9 @@
   "name": "blog-api",
   "version": "1.0.0",
   "description": " ",
-  "main": "dist/index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/index.ts",
+    "start": "ts-node src/index.ts",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "lint": "eslint --fix src test",
