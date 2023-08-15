@@ -27,8 +27,8 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
             res.cookie("access-token", newAccessToken, {
               maxAge: 604800000, // 1 week
                 httpOnly: true,
-              secure: false
-            //   secure: process.env.NODE_ENV === "production",
+            //   secure: false
+              secure: process.env.NODE_ENV === "production",
             });
         }
 
