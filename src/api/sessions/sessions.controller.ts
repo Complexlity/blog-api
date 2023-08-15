@@ -35,15 +35,14 @@ res.cookie("access-token", accessToken, {
     maxAge: 604800000, // 1 week
     httpOnly: true,
     sameSite: 'none',
-  // secure: false,
-  secure: process.env.NODE_ENV === "production",
+    secure: true
 });
 res.cookie("refresh-token", refreshToken, {
   maxAge: 3.154e10, // 1yr
   httpOnly: true,
   sameSite: 'none',
-    secure: process.env.NODE_ENV === "production",
-  // secure: false
+    secure: true
+
 });
 
 return res.send({ accessToken, refreshToken })
