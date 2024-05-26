@@ -5,6 +5,9 @@ import validateRequest from '../../middlewares/validateRequest'
 import requireUser from '../../middlewares/requireUser'
 import { CommentSchema } from '../comments/comments.schema'
 import { createCommentController,  } from '../comments/comments.controller'
+import multer from 'multer'
+const upload = multer({ dest: 'uploads/' }); // Set the directory for file uploads
+
 const router = Router()
 
 router.post('/:postId/comments', requireUser, validateRequest(CommentSchema), createCommentController)
@@ -15,6 +18,7 @@ router.patch("/:postId", requireUser, validateRequest(PostUpdateSchema), updateP
 router.put('/:postId', requireUser, updateLikeController)
 router.delete('/:postId', requireUser, deletePostController)
 router.post('/', requireUser, validateRequest(PostSchema), createPostController)
+router.post('/md', requireUser, upload.single('file'), validateRequest(PostSchema), createPostController)
 router.get('/', getAllPostsController)
 
 export default router

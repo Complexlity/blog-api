@@ -7,10 +7,16 @@ const PostSchema = z.object({
         }).min(1).max(100, "Title must be at most 100 characters"),
         content: z.string({
             required_error: "Post content must be provided"
-        }),
-        published: z.boolean().optional(),
+        }).optional(),
+        published: z.preprocess((value) => {
+            if (value === undefined || value === null) return undefined;
+            if (value === 'true') return true;
+            if (value === 'false') throw new Error("Published cannot be false");
+            return true;
+          }, z.boolean().optional()),
         coverImageSource: z.string(),
-        category: z.string()
+        category: z.string(),
+        type: z.string()
     })
 })
 

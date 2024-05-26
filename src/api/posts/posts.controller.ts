@@ -1,14 +1,29 @@
 import { Request, Response, NextFunction } from 'express'
 import { getAllPosts, createPost, getSinglePost, updateLike, deletePost, updatePost } from './posts.service'
 import slugify from 'slugify'
+import {customAlphabet} from 'nanoid'
+import { floor } from 'lodash'
+
+
+functi
+
+
 
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
+    const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 7)
     let user = res.locals.user
     let title = req.body.title
     const slug = slugify(title, {
         lower: true,
         strict: true
     })
+    const type = req.body.type
+    console.log({ type })
+    if (type === "markdown") {
+        const file = validateFile(req.file)
+       
+    }
+    return
     try {
         const post = await createPost({ author: user._id, title, slug, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource, category: req.body.category })
         res.send(post)
