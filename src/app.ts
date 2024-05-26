@@ -26,7 +26,8 @@ const corsConfig = {
     "http://localhost:3001",
     "https://blog-cms-git-cors-complexlity.vercel.app",
     "https://blog-cms-complexlity.vercel.app",
-    "https://complexlity-blog.vercel.app"
+    "https://complexlity-blog.vercel.app",
+    "https://blog.complexlity.dev",
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,POST,DELETE,PATCH",
