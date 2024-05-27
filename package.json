@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
+    "bun": "bun --watch src/index.ts",
     "dev": "nodemon src/index.ts",
     "lint": "eslint --fix src test",
     "test": "jest --detectOpenHandles",
@@ -44,6 +45,7 @@
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
+    "uploadthing": "^6.12.0",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
