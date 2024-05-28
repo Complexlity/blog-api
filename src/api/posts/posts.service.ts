@@ -47,6 +47,7 @@ export async function getSinglePost(slug: string) {
 }
 
 export async function createPost(query: FilterQuery<PostDocument>) {
+  console.log({query})
     let post = (await PostModel.create(query)).populate('author')
     return post
 }

@@ -1,34 +1,7 @@
-import { Request, Response, NextFunction } from 'express'
-import { getAllPosts, createPost, getSinglePost, updateLike, deletePost, updatePost } from './posts.service'
+import { NextFunction, Request, Response } from 'express'
 import slugify from 'slugify'
-import {customAlphabet} from 'nanoid'
-import { floor } from 'lodash'
-import fs from 'fs/promises'
-import { UTApi } from 'uploadthing/server'
-import { buffer } from 'stream/consumers'
+import { createPost, deletePost, getAllPosts, getSinglePost, updateLike, updatePost } from './posts.service'
 
-const utapi = new UTApi();
-function validateFile(file: any) {
-    if (!file) {
-        throw new Error("File not found")
-    }
-    
-    return file
-}
-
-interface FileEsque extends Blob {
-    name: string;
-    customId?: string;
-}
-
-const bufferToArrayBuffer = (buffer: Buffer) => {
-    const arrayBuffer = new ArrayBuffer(buffer.length);
-    const view = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < buffer.length; ++i) {
-      view[i] = buffer[i];
-    }
-    return arrayBuffer;
-  };
 
 export async function createPostController(req: Request, res: Response, next: NextFunction) {
     let user = res.locals.user
@@ -38,36 +11,10 @@ export async function createPostController(req: Request, res: Response, next: Ne
         strict: true
     })
     const type = req.body.type
-    console.log({ type })
-    if (type === "markdown") {
-        const file = req.file as Express.Multer.File
-        console.log({ file: req.file })
-        console.log("I am here")
-        // const file = validateFile(req.file)       
-        await fs.writeFile('file.json', JSON.stringify(file))
-        const fileBuffer = await fs.readFile(file.path)
-        const arrayBuffer = bufferToArrayBuffer(fileBuffer)
-        console.log({ fileBuffer })
-        const fileEsque = {
-            name: file.filename,
-            type: file.mimetype,
-            size: file.size,
-            arrayBuffer: arrayBuffer
-        } satisfies FileEsque
-        const response1 = await utapi.uploadFiles
-            //@ts-expect-error
-            (fileBuffer).catch(err => {
-                console.log("Buffer Error", err)
-            console.log('Buffer failed')
-        })
-        const response2 = await utapi.uploadFilesFromUrl(file.path).catch(err => {
-            console.log("Path Error", err)
-            console.log('File path failed')
-        })
-    } 
+    
+    
     try {
-        throw new Error("Successful")
-        const post = await createPost({ author: user._id, title, slug, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource, category: req.body.category })
+        const post = await createPost({ author: user._id, title, slug, content: req.body.content, published: req.body.published ?? false, coverImageSource: req.body.coverImageSource, category: req.body.category, type: req.body.type })
         res.send(post)
     } catch (error: any) {
         next(error)
