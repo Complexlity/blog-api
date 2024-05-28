@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "bun:start": "bun src/index.ts",
     "build": "tsc",
     "bun": "bun --watch src/index.ts",
     "dev": "nodemon src/index.ts",
