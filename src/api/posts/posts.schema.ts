@@ -15,8 +15,12 @@ const PostSchema = z.object({
             if (value === 'false') return false
             return true;
           }, z.boolean().optional()),
-        coverImageSource: z.string(),
-        category: z.string(),
+        coverImageSource: z.string({
+            required_error: "Cover Image not found"
+        }),
+        category: z.string({
+            required_error: "Category Missing"
+        }),
         type: z.union([z.literal('plain'), z.literal("raw")])
     })
 })
